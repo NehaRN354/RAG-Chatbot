@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAG Chatbot — Mistral 7B</title>
+  <meta name="description"
+    content="A local RAG-powered chatbot using Mistral 7B and FAISS for intelligent document Q&A." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+        </div>
+        <span class="brand-name">RAG Bot</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Document</div>
+        <div class="doc-card">
+          <div class="doc-icon">📄</div>
+          <div class="doc-info">
+            <div class="doc-name" id="doc-name">parallel_programs.pdf</div>
+            <div class="doc-meta" id="doc-meta">Active source</div>
+          </div>
+        </div>
+
+        <!-- Upload a new PDF -->
+        <input type="file" id="pdf-file-input" accept=".pdf" hidden />
+        <button class="upload-btn" id="upload-btn" title="Upload a new PDF to chat with">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          Upload new PDF
+        </button>
+
+        <!-- Upload progress notice -->
+        <div class="upload-notice" id="upload-notice" style="display:none;">
+          <div class="upload-spinner"></div>
+          <span id="upload-notice-text">Uploading…</span>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="model-badge">
+          <div class="model-dot"></div>
+          <span id="model-label">Loading model…</span>
+        </div>
+        <div class="model-name">Mistral 7B · FAISS</div>
+      </div>
+    </aside>
+
+    <!-- ── Main chat area ── -->
+    <main class="chat-area">
+
+      <!-- Header -->
+      <header class="chat-header">
+        <div class="header-left">
+          <h1>Parallel Programs Assistant</h1>
+          <p class="header-sub">Ask anything about the loaded document</p>
+        </div>
+        <div class="status-pill" id="status-pill">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Initialising</span>
+        </div>
+      </header>
+
+      <!-- Messages -->
+      <section class="messages" id="messages">
+        <!-- Welcome card -->
+        <div class="welcome-card" id="welcome-card">
+          <div class="welcome-icon">🤖</div>
+          <h2>Hello! I'm your RAG assistant.</h2>
+          <p>I'm indexing <strong>parallel_programs.pdf</strong> right now. Once the model is ready, ask me anything
+            about the document!</p>
+          <div class="example-chips" id="example-chips">
+            <button class="chip" data-q="What is Amdahl's Law?">What is Amdahl's Law?</button>
+            <button class="chip" data-q="What causes deadlocks in parallel programs?">What causes deadlocks?</button>
+            <button class="chip" data-q="Explain load balancing in parallel computing.">Explain load balancing</button>
+            <button class="chip" data-q="What is data dependency in parallel programs?">What is data
+              dependency?</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Input bar -->
+      <footer class="input-bar">
+        <div class="input-wrapper">
+          <textarea id="user-input" class="chat-input" placeholder="Ask a question about the document…" rows="1"
+            disabled></textarea>
+          <button class="send-btn" id="send-btn" disabled aria-label="Send message">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </div>
+        <p class="input-hint">Press <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
